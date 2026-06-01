@@ -210,31 +210,4 @@ function createHeart(){
     heart.style.left =
         Math.random()*window.innerWidth + "px";
 
-    heart.style.animationDuration =
-        (Math.random()*4 + 5) + "s";
-
-    heart.onclick = function(e){
-
-        burst(
-            e.clientX,
-            e.clientY
-        );
-
-        heart.remove();
-    };
-
-    document.body.appendChild(heart);
-
-    setTimeout(()=>{
-        if(heart.parentNode){
-            heart.remove();
-        }
-    },9000);
-}
-
-setInterval(createHeart,400);
-
-</script>
-
-</body>
-</html>
+    heart.style.animationDura
