@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Good Morning Marrie 💖</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Arial',sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #ff69b4,
+        #ffb6c1,
+        #ffc0cb
+    );
+}
+
+.card{
+    text-align:center;
+    background:rgba(255,255,255,0.18);
+    backdrop-filter:blur(10px);
+    padding:35px;
+    border-radius:25px;
+    width:90%;
+    max-width:550px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+    z-index:10;
+    animation:floatCard 4s ease-in-out infinite;
+}
+
+h1{
+    color:white;
+    font-size:2.5rem;
+    text-shadow:0 0 15px rgba(255,255,255,0.8);
+    margin-bottom:15px;
+}
+
+.main-love{
+    color:white;
+    font-size:1.6rem;
+    font-weight:bold;
+    margin-bottom:15px;
+}
+
+p{
+    color:white;
+    line-height:1.6;
+}
+
+#typing{
+    min-height:60px;
+    margin-top:15px;
+    font-size:1.1rem;
+}
+
+@keyframes floatCard{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+}
+
+.heart{
+    position:absolute;
+    font-size:30px;
+    cursor:pointer;
+    user-select:none;
+    animation:rise linear forwards;
+}
+
+@keyframes rise{
+    from{
+        transform:translateY(100vh);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-120px);
+        opacity:0;
+    }
+}
+
+.spark{
+    position:absolute;
+    pointer-events:none;
+    animation:explode 1s forwards;
+}
+
+@keyframes explode{
+    from{
+        opacity:1;
+        transform:translate(0,0) scale(1);
+    }
+    to{
+        opacity:0;
+        transform:translate(var(--x),var(--y)) scale(0);
+    }
+}
+
+.tap-note{
+    margin-top:20px;
+    font-size:0.9rem;
+    opacity:0.9;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>🌸 Good Morning Marrie 🌸</h1>
+
+    <div class="main-love">
+        ❤️ Your man Miano loves you ❤️
+    </div>
+
+    <p id="typing"></p>
+
+    <p class="tap-note">
+        💖 Tap the floating hearts 💖
+    </p>
+</div>
+
+<script>
+
+// ---------- Typing Message ----------
+const message =
+"Just a little reminder that you're appreciated, admired, and loved. May your day be filled with smiles, happiness, peace, and all the pink things you love. 💕";
+
+let index = 0;
+
+function typeWriter(){
+    if(index < message.length){
+        document.getElementById("typing").innerHTML += message.charAt(index);
+        index++;
+        setTimeout(typeWriter,55);
+    }
+}
+
+typeWriter();
+
+// ---------- Music ----------
+let musicStarted = false;
+
+function startMusic(){
+
+    if(musicStarted) return;
+    musicStarted = true;
+
+    const audioCtx =
+        new (window.AudioContext || window.webkitAudioContext)();
+
+    function playNote(freq,duration){
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.frequency.value = freq;
+        osc.type = "sine";
+
+        gain.gain.setValueAtTime(
+            0.04,
+            audioCtx.currentTime
+        );
+
+        gain.gain.exponentialRampToValueAtTime(
+            0.0001,
+            audioCtx.currentTime + duration
+        );
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+    }
+
+    const melody = [
+        523,659,784,659,
+        523,659,880,784
+    ];
+
+    let i = 0;
+
+    setInterval(()=>{
+        playNote(melody[i % melody.length],0.55);
+        i++;
+    },700);
+}
+
+document.body.addEventListener("click",startMusic);
+
+// ---------- Heart Burst ----------
+function burst(x,y){
+
+    for(let i=0;i<12;i++){
+
+        const spark =
+            document.createElement("div");
+
+        spark.className = "spark";
+        spark.innerHTML = "💖";
+
+        spark.style.left = x + "px";
+        spark.style.top = y + "px";
+
+        spark.style.setProperty(
+            "--x",
+            (Math.random()*220-110)+"px"
+        );
+
+        spark.style.setProperty(
+            "--y",
+            (Math.random()*220-110)+"px"
+        );
+
+        document.body.appendChild(spark);
+
+        setTimeout(()=>{
+            spark.remove();
+        },1000);
+    }
+}
+
+// ---------- Floating Hearts ----------
+function createHeart(){
+
+    const heart =
+        document.createElement("div");
+
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+
+    heart.style.left =
+        Math.random()*window.innerWidth + "px";
+
+    heart.style.animationDuration =
+        (Math.random()*4 + 5) + "s";
+
+    heart.onclick = function(e){
+
+        burst(
+            e.clientX,
+            e.clientY
+        );
+
+        heart.remove();
+    };
+
+    document.body.appendChild(heart);
+
+    setTimeout(()=>{
+        if(heart.parentNode){
+            heart.remove();
+        }
+    },9000);
+}
+
+setInterval(createHeart,400);
+
+</script>
+
+</body>
+</html>
