@@ -149,59 +149,23 @@ function typeWriter(){
     }
 }
 
-typeWriter();
-
-// ---------- Music ----------
-let musicStarted = false;
-
-function startMusic(){
-
-    if(musicStarted) return;
-    musicStarted = true;
-
-    const audioCtx =
-        new (window.AudioContext || window.webkitAudioContext)();
-
-    function playNote(freq,duration){
-
-        const osc = audioCtx.createOscillator();
-        const gain = audioCtx.createGain();
-
-        osc.connect(gain);
-        gain.connect(audioCtx.destination);
-
-        osc.frequency.value = freq;
-        osc.type = "sine";
-
-        gain.gain.setValueAtTime(
-            0.04,
-            audioCtx.currentTime
-        );
-
-        gain.gain.exponentialRampToValueAtTime(
-            0.0001,
-            audioCtx.currentTime + duration
-        );
-
-        osc.start();
-        osc.stop(audioCtx.currentTime + duration);
-    }
-
-    const melody = [
-        523,659,784,659,
-        523,659,880,784
-    ];
-
-    let i = 0;
-
-    setInterval(()=>{
-        playNote(melody[i % melody.length],0.55);
-        i++;
-    },700);
-}
-
-document.body.addEventListener("click",startMusic);
-
+<a
+href="https://youtu.be/fCWvZisydrE?si=gdiR14urPTS4_AmN"
+target="_blank"
+style="
+display:inline-block;
+margin-top:20px;
+padding:12px 22px;
+background:white;
+color:#ff69b4;
+text-decoration:none;
+border-radius:30px;
+font-weight:bold;
+font-size:1rem;
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+">
+🎵 Play Our Song
+</a>
 // ---------- Heart Burst ----------
 function burst(x,y){
 
